@@ -1,8 +1,8 @@
 <? if ($setBodyContainerOn===true){?>
   
-	</div><?/*for .cell #content_s*/?>
+	</div> <?/*for .cell #content_s*/?>
 
-    </div><?/*for .row*/?>	    
+    </div> <?/*for .row*/?>	    
 </div> <?/*for .container*/?>  
 
 <div  class="grad4 footer_s" >

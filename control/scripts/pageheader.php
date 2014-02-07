@@ -18,17 +18,13 @@
 		?>
 		<span class="date"><?= $l_days[$day] . "&nbsp;" . $today ?></span>
 	    </div>
-
-
+	    
 	    <div class="cms_title"  >
 		<span><?= $_COOKIE['user_cookie'] ?></span>
 		<a  href="./" > &nbsp;|&nbsp; <?= $l_systemctrl ?></a>
 	    </div>
 
-
 	</div>
-
-
 
 	<div class="grad3" style="width: 100%; height: 30px; float: right  ">
 
@@ -61,7 +57,6 @@
 	<div class="cell" id="sidebar_s" >
 	    <? include("scripts/side_bar.php"); ?>
 	</div>
-
 
 	<div class="cell" id="content_s">
 <?/*  these closures in include/footer.php ?>	  

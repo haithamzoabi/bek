@@ -1,10 +1,8 @@
 <div class="company_section" >
-
     <div class="company_section_container" >
 	<div class="logodiv" style=""></div>
 	<span style=""><?= $l_company ?></span>
     </div>
-
 </div>
 
 

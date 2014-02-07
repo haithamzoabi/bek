@@ -8,6 +8,6 @@ $l_usernamenotexist="إسم المستخدم الذي ادخلته غير صحي
 $l_correct_usernameandpasswrod="عليك ادخال اسم مستخدم ورقم سري صحيحان";
 $l_entry="تسجيل الدخول";
 $l_login="دخول";
-$l_rememberme="إبقى متصلاًً";
+$l_rememberme="إبقى متصلاً";
 
 ?>

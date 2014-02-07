@@ -86,5 +86,4 @@ $menu_array = array(
     array("$l_termsofuse", "termsofuse"),
     array("$l_patientsSystem", array(array($l_patientsList, 'patientsList'), array($l_addNewPatient, 'addNewPatient'))),
 );
-
 $menu_icons = array('', 'info.png', 'article.png', 'gallery.png', 'video.png', 'phone.png', 'globe.png', 'wrench_icon.png', 'question.png', 'chat_bubble.png', '', 'health.png');
