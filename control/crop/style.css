@@ -1,0 +1,16 @@
+BODY{ font-family: tahoma; font-size: 14px; background: url(opyajjk.png); overflow: auto; padding: 0px; margin: 0px; direction: rtl;color: #E0E0E0; }
+.ptitle{ width: 100%; display: block; height: 100%;  font-size:1.3em; border-bottom:2px solid #e0e0e0; padding-bottom: 10px  }
+.wrapper{  height: 100%; margin: 15px; background: url(blackdot.png) ; overflow: hidden; padding: 15px}
+.btn{
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #99CCCC), color-stop(1, #B8DCDC) );
+background:-moz-linear-gradient( center top, #99CCCC 5%, #B8DCDC 100% );
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#99CCCC', endColorstr='#B8DCDC');
+border-radius: 3px;
+border: 1px solid #55A8A8; color: #2E5A5A;
+display: inline-block; font-family: tahoma;  text-decoration: none;
+padding: 3px 10px;  cursor: pointer;box-shadow: 0px 1px 2px #FFFFff inset;
+}
+
+.title2{ display: block; padding: 0px; margin: 0px; font-size: 1.2em; direction: rtl; text-align: right;}
+span.describe{ display: block; color: #fff; margin: 10px 0px;}
+.final_img img{border: 5px solid #ffffff; }
