@@ -1,6 +1,6 @@
 
 <div id="logContainer">
-    <div id="titleContainer" >
+    <div id="titleContainer" class="grad1">
 	<div>
 	    <img src="images/group_key.png" width="32" height="32" alt="" >
 	</div>
@@ -12,7 +12,7 @@
     <div>
 
 	<form method="POST" action="index.php" >
-	    <table align="center" cellpadding="0" cellspacing="0" style=" color: #660033 "  width="400px" dir="rtl" border="0">
+	    <table align="center" cellpadding="3" cellspacing="0" style=" color: #660033 "  width="400px" dir="rtl" border="0">
 		<tr><td colspan="2" align="center">&nbsp;<?= $err_msg ?>&nbsp;</td></tr>
 		<tr>
 		    <td align="left"  height="30px"><?= $l_username ?>&nbsp;:  </td>
@@ -23,7 +23,7 @@
 		    <td> <input class="txtbox" type="password" size="30" name="password"  > </td>
 		</tr>
 
-		<tr style="height: 30px" style="display: none">
+		<tr style="height: 30px" >
 		    <td align="center"  colspan="2">
 			<label><input type="checkbox" name="rememberme" ><?= $l_rememberme ?></label>
 		    </td>

@@ -58,32 +58,37 @@ function getCustomerTypeData($cid) {
     return $row;
 }
 
-$menuArray = array(
-    "home" => "$l_main",
-    "video" => "$l_videos",
-    "gallery" => "$l_pictures",
-    "songs" => "$l_songs",
-    "news" => "$l_news",
-    "aboutus" => "$l_aboutUs",
-    "contactus" => "$l_contactUs"
-);
-
 function getMenu() {
     return $GLOBALS['menuArray'];
 }
 
 $menu_array = array(
     array("$l_home", "home"),
-    array("$l_aboutus", "aboutus"),
-    array("$l_articles", array(array($l_articleslist, "articles_list"), array($l_addnewarticle, "articles_add"))),
-    array("$l_gallery", array(array($l_cats, "gal_cats"), array($l_addnewpic, "gal_addpic&sid=" . $_GET['sid']), array($l_picslist, "picslist&sid=" . $_GET['sid']))),
-    array("$l_video", array(array($l_videoslist, "vidlist"), array($l_addnewvid, "vid_addnew"))),
+    array("$l_video", array(
+	    array($l_categories, "vidCategories"),
+	    array($l_videoslist, "vidlist"),
+	    array($l_addnewvid, "vid_addnew")
+	)
+    ),
+    array("$l_articles", array(
+	    array($l_categories, "articleCategories"),
+	    array($l_articleslist, "articles_list"),
+	    array($l_addnewarticle, "articles_add")
+	)
+    ),
+    array("$l_images", array(
+	    array($l_albums, "gal_cats"),
+	    array($l_addnewpic, "gal_addpic"),
+	    array($l_picslist, "picslist")
+	)
+    ),
+    array("$l_music", array(
+	    array($l_albums, "music_cats"),
+	    array($l_addnewsong, "music_addpic"),
+	    array($l_musiclist, "musiclist")
+	)
+    ),
     array("$l_contactus", "contactus"),
-    array("$l_latest_news", array(array($l_newlist, 'news_list'), array($l_addnewreport, 'news_addnew'))),
-    array("$l_ourservices", "ourservices"),
-    array("$l_qa", array(array($l_questionslist, 'questions_list'), array($l_addnewquestion, "questions_addnew"))),
-    array("$l_dynamictext", "text_add"),
-    array("$l_termsofuse", "termsofuse"),
-    array("$l_patientsSystem", array(array($l_patientsList, 'patientsList'), array($l_addNewPatient, 'addNewPatient'))),
+    array("$l_aboutus", "aboutus")
 );
-$menu_icons = array('', 'info.png', 'article.png', 'gallery.png', 'video.png', 'phone.png', 'globe.png', 'wrench_icon.png', 'question.png', 'chat_bubble.png', '', 'health.png');
+$menu_icons = array('', 'video.png', 'article.png', 'gallery.png', 'music.png', 'phone.png', 'globe.png', 'wrench_icon.png', 'question.png', 'chat_bubble.png', '', 'health.png');
