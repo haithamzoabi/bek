@@ -4,9 +4,10 @@ $POSTlogin = $_POST['login'];
 $POSTusername = $_POST['username'];
 $POSTpassword = $_POST['password'];
 $POSTremember = $_POST['rememberme'];
-$page = $_GET['page'];
+$page = $GetPageVal;
+$err_msg = false;
 
-if ($POSTlogin) {
+if (isset($POSTlogin)) {
 
     if ($POSTusername && $POSTpassword) {
 
@@ -18,11 +19,9 @@ if ($POSTlogin) {
 	    }
 
 	    if ($POSTusername == $dbusername && $POSTpassword == $dbpassword) {
-
+		$_SESSION ['username'] = $dbusername;
 		if ($POSTremember == "on") {
 		    setcookie("username", $dbusername, time() + 3600);
-		} else {
-		    $_SESSION ['username'] = $dbusername;
 		}
 	    } else {
 		$err_msg = $l_badpassword;
