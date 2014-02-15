@@ -729,3 +729,34 @@ label.error{position:absolute;top:-10px; color:white;padding:1px 5px;right:5px;f
 #statUl li.h {font-weight:normal;font-style:italic;color:#4E4E4E}
 
 
+
+.alertBox {
+    line-height: 24px; 
+    padding: 5px; 
+    background: #CFE7B8; 
+    border: 1px solid #AAD580; 
+    color: #000; 
+    font-weight: bold;
+    text-align: center; 
+    display: block;  
+    margin:5px 0px; 
+    position: relative; 
+}
+.alertBoxError { 
+    background: #FF9D9D; 
+    border: 1px solid #FFB0D8;
+}
+.alertBox_x {
+    position: absolute; 
+    left: 5px; 
+    top: 5px; 
+    width: 13px; 
+    height: 13px; 
+    background: url(../images/x.png); 
+    cursor: pointer;
+}
+.redBorder{
+    box-shadow: 0 0 5px #F00;
+}
+
+

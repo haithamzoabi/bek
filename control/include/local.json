@@ -1,0 +1,9 @@
+{
+    "l_websiteName": "موقع ابن البيك",
+    "l_company": "موقع ابن البيك",
+    "l_password": "لرقم السري",
+    "l_fillEmptyFields": "عليك تعبئة الحقول الفارغة",
+	"l_savesuccess": "تم الحفظ بنجاح",
+	"l_errormessage": "خطأ: لم يتم الحفظ يرجى المحاولة لاحقاً",
+	"l_close" : "إغلاق"
+}

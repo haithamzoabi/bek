@@ -8,6 +8,8 @@ $controlDomainName = 'http://localhost/bek/control/';
 $cssFilePath = $controlDomainName . 'include/style.css';
 $jqueryFilePath = $controlDomainName . 'include/jquery-library.min.js';
 $jsFunctionsFilePath = $controlDomainName . 'include/jsFunctions.js';
+$jsLOCALSfilePath = $controlDomainName . "include/jsLocaJson.php";
+$ext_all_css = $controlDomainName . "include/ext-all.css";
 
 $homepageGet = 'home';
 $setBodyContainerOn = false;
@@ -15,6 +17,16 @@ $GetPageVal = $url[0];
 $getpage = (isset($GetPageVal) && !empty($GetPageVal) && $GetPageVal !== 'logout' ) ? $url[0] : $homepageGet;
 $script_page = return_page_param();
 
+////////////////LOCALIZATION
+$json = file_get_contents("$controlDomainName/include/local.json");
+$jsonIterator = new RecursiveIteratorIterator(
+	new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
+
+foreach ($jsonIterator as $key => $val) {
+    $$key = $val;
+}
+
+//////////////
 function query($q) {
     if ($res = mysql_query($q)) {
 	return $res;
@@ -60,6 +72,18 @@ function getCustomerTypeData($cid) {
 
 function getMenu() {
     return $GLOBALS['menuArray'];
+}
+
+function getPostInput($var) {
+    return filter_input(INPUT_POST, $var);
+}
+
+function getGetInput($var) {
+    return filter_input(INPUT_GET, $var);
+}
+
+function getServerInput($var) {
+    return filter_input(INPUT_SERVER, $var);
 }
 
 $menu_array = array(
