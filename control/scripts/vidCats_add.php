@@ -1,6 +1,6 @@
 <script>
     $(function() {
-
+	var menu = getURLParameter('menu');
 	$('form').submit(function() {
 	    var fields = getFormFields('categoriesForm');
 	    if (fields.emptyFields > 0) {
@@ -26,7 +26,8 @@
 		    $('#listdiv').empty();
 		    $.get('<?= $controlDomainName ?>/includeThisFile.php',{
 			path : '<?=$controlDomainName?>',
-			file : 'scripts/vidCats_list.php'
+			file : 'scripts/vidCats_list.php',
+			menu : menu
 		    },function(data){
 			$('#listdiv').html(data);
 		    });

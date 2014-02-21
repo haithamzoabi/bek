@@ -133,38 +133,48 @@ function open_pic(pic) {
 }
 
 
-function check_delete() {
-    var rowId = getURLParameter('rowId');
-    var page = getURLParameter('page');
-    var action = getURLParameter('action');
-    var status = confirm(globalsVar.l_deleteMessageConfirm + '\nrowId: (' + rowId + ') , page: (' + page + ')');
+function check_delete(page , returnUrl) {
+    var sid = getURLParameter('sid');
+    var status = confirm(LOCALS.l_deleteMessageConfirm + '\nId: (' + sid + ') , page: (' + page + ')');
     if (status === true) {
 
-	$.ajax({
-	    type: "POST",
-	    url: 'include/response.php',
-	    data: {
-		type: 'delete',
-		page: page,
-		rowId: rowId
-	    },
-	    success: function(data) {
-		$('form').prepend(msgBox(data.success, data));
-		if (data.success === true) {
-		    if (page === 'order_details') {
-			document.location.replace('?page=orders');
-		    } else {
-			document.location.replace('?page=' + page + '&action=add');
-		    }
-
-		}
-	    },
-	    dataType: 'json'
-	});
+		$.ajax({
+			type: "POST",
+			url: 'include/response.php',
+			data: {
+				type: 'delete',
+				page: page,
+				sid: sid
+			},
+			success: function(data) {
+			$('form').prepend(msgBox(data.success, data));
+			if (data.success === true) {
+				document.location.replace(returnUrl);
+			}
+			},
+			dataType: 'json'
+		});
 
     }
     return false;
 }
+
+
+
+
+$(function() {
+
+    $(":text,textarea").each(function() {
+		$(this).addClass('txtbox');
+    });
+    $("select").each(function() {
+		$(this).addClass('lstBox');
+    });
+
+});
+
+
+
 function isEmpty(str) {
     return (!str || 0 === str.length);
 }
@@ -193,4 +203,155 @@ function getFormFields(theFormId) {
     });
     return obj = {fields: fields, emptyFields: emptyFields};
 }
+
+
+
+function FUNC(){
+	var me = this;
+	this.configSelection = function(page , lstBoxId , selectedId){
+		var me = this;
+		$.ajax(LOCALS.controlDomainName +'/include/response.php', {
+			type: 'POST',
+			data: {
+				type: 'get',
+				page : page
+			},
+			success: function(data){
+				me.addOptionToSelect (lstBoxId ,data.selectValues , selectedId);
+			},
+			dataType: 'json'
+		})
+	
+	}
+	
+	this.addOptionToSelect = function (lstId ,selectValues , selectedId){
+		$.each(selectValues, function(key, item) {
+			var option = $("<option></option>").attr("value", item.value).text(item.text);
+			if (item.value === selectedId){
+				option.attr('selected','selected');
+			}
+			$('#'+lstId).append(option);
+		});
+	}
+	
+	this.sendFormData= function(formId , action ){
+		
+		this.formId = formId;
+		this.action = action;
+		$('#'+formId).submit(function() {
+			var fields = me.getFormFields(formId);
+			if (fields.emptyFields > 0) {
+				var data = new Object();
+				data.msg = LOCALS['l_fillEmptyFields'];
+				$('form').prepend(msgBox(false, data));
+				return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				url: LOCALS.controlDomainName +'/include/response.php',
+				data: {
+					type: 'set',
+					page: formId,
+					action: action,
+					sid : (action==='update')?getURLParameter('sid'):null,
+					fields: fields.fields
+				},
+				success: me.sendSuccessCallBack,
+				failure : me.sendFailureCallBack,
+				dataType: 'json'
+			});
+			
+			
+			return false;
+		});
+		
+		
+	}
+	
+	this.sendSuccessCallBack = function(data) {		
+		if (data.success && me.action==='add') {			
+			$('#'+me.formId).find("input[type=text], textarea, select").val("");
+		}
+		$('#'+me.formId).prepend(msgBox(data.success, data));
+		
+		
+	}
+	
+	this.sendFailureCallBack = function(response){
+		console.log ('Error: your request has failed' , data , this);
+	}
+	
+	this.ajaxIncludeFile = function(file,containerDivId){
+		$('#'+containerDivId).empty();
+		$.get(LOCALS.controlDomainName +'/includeThisFile.php', 
+			{
+				path: LOCALS.controlDomainName,
+				file: file
+			}, 
+			function(data) {
+				$('#'+containerDivId).html(data);
+			}
+		);
+	}
+	
+	
+	this.getFormFields = function (theFormId) {
+		var fields = {};
+		var emptyFields = 0;
+		var fVal = '';
+		$("#" + theFormId).find("input, textarea, select").each(function(index, row) {
+			var inputType = this.tagName.toUpperCase() === "INPUT" && this.type.toUpperCase();
+			var isSelectBox = this.tagName === "SELECT";
+			fVal = $(this).val();
+			if (inputType !== "BUTTON" && inputType !== "SUBMIT") {
+				fields[this.name] = fVal;
+			}
+			if (isSelectBox) {
+				fVal = $(this).find(":selected").val();
+				fields[this.name] = fVal;
+			}
+			if (isEmpty(fVal)) {
+				emptyFields++;
+				$(this).addClass('redBorder');
+			} else {
+				$(this).removeClass('redBorder');
+			}
+			$(this).on('blur' , function(){
+				$(this).removeClass('redBorder')
+			});
+		});
+		return obj = {fields: fields, emptyFields: emptyFields};
+	}
+
+	this.fetchData = function(formId, callBack){
+	
+		var sid = getURLParameter('sid');
+		var menu = getURLParameter('menu');
+		if (sid) {
+			$.ajax({
+				type: "POST",
+				url: LOCALS.controlDomainName+'/include/response.php',
+				data: {
+					type: 'get',
+					page: formId,
+					sid: sid
+				},
+				success: function(data) {
+					var row = me.formData = data.row;
+					$.each(row , function(key, value){
+						$('#'+key,'#'+formId).val(value);
+					});
+					callBack(me.formData);
+				},
+				dataType: 'json'
+			});
+		}	
+	}
+
+}
+var FUNC = new FUNC();
+
+
+
 

@@ -6,6 +6,8 @@
 	<script src="<?=$jqueryFilePath?>"></script>
 	<script src="<?=$jsFunctionsFilePath?>"></script>
 	<script src="<?=$jsLOCALSfilePath?>"></script>
+	<script type="text/javascript" src="<?=$controlDomainName?>ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="<?=$controlDomainName?>ckeditor/lang/_languages.js"></script>
 	<title><?=$l_websitePageTitle?></title>
 </head>
 <body>

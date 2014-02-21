@@ -31,41 +31,73 @@ switch ($requestMethod) {
 
 		    case 'categoriesForm':
 			
-			switch ($postAction) {
+				switch ($postAction) {
 
-			    case 'add':
-				$q = sprintf("insert into vid_cats (v_name,v_order,v_status) values ('%s','%s','%s')", 
-				    mysql_real_escape_string($postFields['txtname']), 
-				    mysql_real_escape_string($postFields['txtorder']), 
-				    mysql_real_escape_string($postFields['lststatus'])
-				);
-				break;
+					case 'add':
+					$q = sprintf("insert into vid_cats (v_name,v_order,v_status) values ('%s','%s','%s')", 
+						mysql_real_escape_string($postFields['txtname']), 
+						mysql_real_escape_string($postFields['txtorder']), 
+						mysql_real_escape_string($postFields['lststatus'])
+					);
+					break;
 
-			    case 'update':
-				$sid = getPostInput('sid');
-				$q=  sprintf("update vid_cats set v_name='%s', v_order='%s', v_status='%s' where v_id='$sid'",
-				    mysql_real_escape_string($postFields['txtname']), 
-				    mysql_real_escape_string($postFields['txtorder']), 
-				    mysql_real_escape_string($postFields['lststatus'])					
-				);
-				break;
-			}
+					case 'update':
+					$sid = getPostInput('sid');
+					$q=  sprintf("update vid_cats set v_name='%s', v_order='%s', v_status='%s' where v_id='$sid'",
+						mysql_real_escape_string($postFields['txtname']), 
+						mysql_real_escape_string($postFields['txtorder']), 
+						mysql_real_escape_string($postFields['lststatus'])					
+					);
+					break;
+				}
 
-			
-			$res = query($q);
-			if ($res) {
-			    $arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res, 'q'=>$q);
-			} else {
-			    $arr = array('success' => false, 'msg' => $l_errormessage);
-			}
+				
+				$res = query($q);
+				if ($res) {
+					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res, 'q'=>$q);
+				} else {
+					$arr = array('success' => false, 'msg' => $l_errormessage);
+				}
 
-			echo json_encode($arr);
+				echo json_encode($arr);
 
 
 			break;
 
-		    case 'addItem':
-		    case 'updateItem':
+		    case 'videoForm':
+				switch ($postAction){
+					case 'add':
+					$q= sprintf("insert into video (v_category,v_city,v_title,v_description,v_link,v_status) values ('%s','%s','%s','%s','%s','%s')",
+						mysql_real_escape_string($postFields['lstCategories']), 
+						mysql_real_escape_string($postFields['lstCities']), 
+						mysql_real_escape_string($postFields['txtTitle']), 
+						mysql_real_escape_string($postFields['txtDetails']), 
+						mysql_real_escape_string($postFields['txtLink']), 
+						mysql_real_escape_string($postFields['lststatus']) 
+					);
+					break;
+					
+					case 'update':
+						$sid = getPostInput('sid');
+						$q=  sprintf("update video set v_category='%s', v_city='%s', v_title='%s' , v_description='%s' , v_link='%s' , v_status='%s' where v_id='$sid'",
+							mysql_real_escape_string($postFields['lstCategories']), 
+							mysql_real_escape_string($postFields['lstCities']), 
+							mysql_real_escape_string($postFields['txtTitle']), 
+							mysql_real_escape_string($postFields['txtDetails']), 
+							mysql_real_escape_string($postFields['txtLink']), 
+							mysql_real_escape_string($postFields['lststatus']) 				
+						);
+					break;
+				}
+				
+				$res = query($q);
+				if ($res) {
+					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res, 'q'=>$q);
+				} else {
+					$arr = array('success' => false, 'msg' => $l_errormessage);
+				}
+
+				echo json_encode($arr);
 			break;
 
 		    case 'itemTypes':
@@ -110,75 +142,84 @@ switch ($requestMethod) {
 		switch ($postPage) {
 
 		    case 'categoriesForm':
-			$q = "select * from vid_cats where v_id='$sid'";
-			$res = query($q);
-			$row = mysql_fetch_row($res);
-			$arr = array('success' => true, 'row' => array(
-				'txtname' => $row[1],
-				'txtorder' => $row[2],
-				'lststatus' => $row[3]
-			));
-			echo json_encode($arr);
+				$q = "select * from vid_cats where v_id='$sid'";
+				$res = query($q);
+				$row = mysql_fetch_row($res);
+				$arr = array('success' => true, 'row' => array(
+					'txtname' => $row[1],
+					'txtorder' => $row[2],
+					'lststatus' => $row[3]
+				));
+				echo json_encode($arr);
 			break;
 
-		    case 'updateItem':
-
-
-
+			case 'videoForm':
+				$q="select * from video where v_id='$sid' ";
+				$res= query($q);
+				$row = mysql_fetch_row($res);
+				$arr = array('success' => true, 'row' => array(
+					'lstCategories' => $row[1],
+					'lstCities' => $row[2],
+					'txtTitle' => $row[3],
+					'txtDetails' => $row[4],
+					'txtLink' => $row[5],
+					'lststatus' => $row[6]
+				));
+				echo json_encode($arr);
 			break;
-
-		    case 'itemTypes':
-
-
-
+			
+		    case 'vidCategories_list':
+				$selectValues = [];
+				$q="select v_id,v_name from vid_cats where v_status='1' order by v_order limit 100";
+				$res = query($q);
+				while ($row = mysql_fetch_row($res)){
+					
+					$object = array(
+						 'value' => $row[0],
+						 'text' => $row[1] 
+					);				
+					array_push($selectValues , $object);
+				}
+				
+				$arr = array('success'=>true , 'selectValues' => $selectValues);				
+				echo json_encode($arr);
 			break;
-
-		    case 'updateCustomer':
-
-
-
+			
+			case 'cities_list':
+				$selectValues = [];
+				$q="select c_id,c_name from cities order by c_name limit 100";
+				$res = query($q);
+				while ($row = mysql_fetch_row($res)){
+					
+					$object = array(
+						 'value' => $row[0],
+						 'text' => $row[1] 
+					);				
+					array_push($selectValues , $object);
+				}
+				
+				$arr = array('success'=>true , 'selectValues' => $selectValues);				
+				echo json_encode($arr);
 			break;
+			
 
-		    case 'customersTypes':
-
-
-
-
-			break;
-
-		    case 'order_details':
-
-
-
-			break;
 		}
 
 
 		break;
 
 	    case 'delete':
-		$rowId = $_POST['rowId'];
+		$sid = $_POST['sid'];
 		switch ($postPage) {
 
-		    case 'updateItem':
-			$q = "delete from items where item_id='$rowId'";
+		    case 'videoForm':
+				$q = "delete from video where v_id='$sid'";
 			break;
-
-		    case 'updateCustomer':
-			$q = "delete from customers where customer_id='$rowId'";
+			
+			case 'categoriesForm':
+				$q = "delete from vid_cats where v_id='$sid'";
 			break;
-
-		    case 'customersTypes':
-			$q = "delete from customers_types where cust_type_code='$rowId'";
-			break;
-
-		    case 'itemTypes':
-			$q = "delete from item_types where item_type_code='$rowId'";
-			break;
-
-		    case 'order_details':
-			$q = "delete from orders where order_id='$rowId'";
-			break;
+			
 		}
 
 		if (query($q)) {

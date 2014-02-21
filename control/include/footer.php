@@ -16,26 +16,6 @@
 
 <script>
 
-    $(function() {
-
-	$(":text,textarea").each(function() {
-	    ($(this).addClass('txtbox'));
-	});
-	$("select").each(function() {
-	    $(this).css({height: '25px'});
-	});
-
-	var content_s_h = $('.content_s').height();
-	var content_s_w = $('.content_s').width();
-	var sidebar_s_h = $('.sidebar_s').height();
-	var sidebar_s_w = $('.sidebar_s').width();
-	var body_h = $('body').height();
-	body_h = (body_h > 600) ? body_h : 600;
-	var body_w = $('body').width();
-	var doc_w = $(document).width();
-
-    });
-
 </script>
 
 <?}?>

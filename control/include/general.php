@@ -19,8 +19,7 @@ $script_page = return_page_param();
 
 ////////////////LOCALIZATION
 $json = file_get_contents("$controlDomainName/include/local.json");
-$jsonIterator = new RecursiveIteratorIterator(
-	new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
+$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
 
 foreach ($jsonIterator as $key => $val) {
     $$key = $val;
@@ -31,7 +30,8 @@ function query($q) {
     if ($res = mysql_query($q)) {
 	return $res;
     } else {
-	die('ERROR: ' . mysql_error());
+		//die('ERROR: ' . mysql_error());
+	return false;
     }
 }
 

@@ -47,7 +47,8 @@ $(function() {
 		$('#listdiv').empty();
 		$.get('<?= $controlDomainName ?>/includeThisFile.php',{
 		    path : '<?=$controlDomainName?>',
-		    file : 'scripts/vidCats_list.php'
+		    file : 'scripts/vidCats_list.php',
+		    menu : menu
 		},function(data){
 		    $('#listdiv').html(data);
 		});
@@ -94,13 +95,13 @@ $(function() {
 		    <img src="<?= $controlDomainName ?>images/ico_save.png" width="16" height="16" align="top"> 
 		    <span><?= $l_save ?></span> 
 		</button>
-		<button class="myButton" type="submit" name="cmdDelete" id="cmdDelete">
+		<button class="myButton" type="button" name="cmdDelete" id="cmdDelete" onclick="check_delete('categoriesForm', LOCALS.controlDomainName+'vidCategories?menu=<?=getGetInput('menu')?>&action=add')">
 		    <img src="<?= $controlDomainName ?>images/delete_no.gif" width="16" height="16" align="top"> 
 		    <span><?= $l_delete ?></span> 
 		</button>
 		
-		<button type="button" class="Imgbutton" name="OpenFormBtn" onclick="document.location.replace('?menu=<?=  getGetInput('menu')?>')" id="OpenFormBtn">
-		    <img src="images/minus-icon.png" width="16" height="16" align="top"> 
+		<button type="button" class="Imgbutton" name="OpenFormBtn" onclick="document.location.replace('?menu=<?=getGetInput('menu')?>')" id="OpenFormBtn">
+		    <img src="<?= $controlDomainName ?>images/minus-icon.png" width="16" height="16" align="top"> 
 		    <span><?=$l_close?></span> 
 		</button>
 

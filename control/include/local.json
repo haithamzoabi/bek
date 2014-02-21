@@ -1,9 +1,23 @@
 {
+    "controlDomainName": "http://localhost/bek/control/",
     "l_websiteName": "موقع ابن البيك",
     "l_company": "موقع ابن البيك",
     "l_password": "لرقم السري",
     "l_fillEmptyFields": "عليك تعبئة الحقول الفارغة",
 	"l_savesuccess": "تم الحفظ بنجاح",
 	"l_errormessage": "خطأ: لم يتم الحفظ يرجى المحاولة لاحقاً",
-	"l_close" : "إغلاق"
+	"l_close" : "إغلاق",
+	"l_cities": "بلدات",
+	"l_area": "المنطقة",
+	"l_addNewVideo": "إضافة فيديو ",
+	"l_updateVideo": "تعديل فيديو",
+	"l_city": "البلدة",
+	"l_videoTitle": "عنوان",
+	"l_videoDetails": "تفاصيل",
+	"l_link": "رابط",
+	"l_deleteMessageConfirm": "هل انت متأكد من الحذف?",
+	"l_latestVideo": "آخر الفيديوهات",
+	"l_deleterror": "Error! لم يتم الحذف",
+	"l_deletesuccess": "تم الحذف، سيتم اغلاق هذه الصفحة بشكل تلقائي",
+	"": ""
 }
