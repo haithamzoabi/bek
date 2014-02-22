@@ -22,7 +22,6 @@ $conn ->query("SET NAMES 'utf8'");
 function query($q ) {
 	$conn = $GLOBALS['conn'];
     if ($res = $conn->query($q)) {
-		$res->data_seek(0);
 		return $res;
     } else {
 		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);

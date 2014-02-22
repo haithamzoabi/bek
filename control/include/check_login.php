@@ -11,9 +11,9 @@ if (isset($POSTlogin)) {
 
     if ($POSTusername && $POSTpassword) {
 
-	$query = query("SELECT * FROM users WHERE u_name='$POSTusername' ");
-	if (mysql_num_rows($query) != 0) {
-	    while ($row = mysql_fetch_assoc($query)) {
+	$res = query("SELECT * FROM users WHERE u_name='$POSTusername' ");
+	if ($res->num_rows != 0) {
+	    while ($row = $res->fetch_assoc()) {
 		$dbusername = $row['u_name'];
 		$dbpassword = $row['u_password'];
 	    }

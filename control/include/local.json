@@ -20,6 +20,6 @@
 	"l_latestVideo": "آخر الفيديوهات",
 	"l_deleterror": "Error! لم يتم الحذف",
 	"l_deletesuccess": "تم الحذف، سيتم اغلاق هذه الصفحة بشكل تلقائي",
-	"l_errorMustUpTo5": "Error! لا يمكنك اختيار اكثر من 5",
+	"l_errorMustUpTo5": "Error! عليك ان تختار على الاقل واحد وعلى الاكثر 5",
 	"": ""
 }

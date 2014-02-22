@@ -57,3 +57,26 @@ $menuArray = array(
 function getMenu() {
 	return $GLOBALS['menuArray'];
 }
+
+
+function getDuration($video_id){
+/*
+	parse_str(parse_url($url,PHP_URL_QUERY),$arr);
+	$video_id=$arr['v']; 
+*/
+	$data=@file_get_contents('http://gdata.youtube.com/feeds/api/videos/'.$video_id.'?v=2&alt=jsonc');
+	if (false===$data) return false;
+	$obj=json_decode($data);
+	$time = gmdate("i:s", $obj->data->duration);
+	return $time;
+}
+
+   
+
+
+
+
+
+
+
+

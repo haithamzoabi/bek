@@ -10,7 +10,8 @@ $(function(){
 		var checkAll = $('input[name="check_pinned"]:checked');
 		var checkAllCount = checkAll.length;
 		var me = this;
-		$.ajax(LOCALS.controlDomainName +'/include/response.php', {
+		if (checkAllCount<=5 && checkAllCount>1){
+			$.ajax(LOCALS.controlDomainName +'/include/response.php', {
 			type: 'POST',
 			data: {
 				type: 'set',
@@ -23,12 +24,24 @@ $(function(){
 				console.log ('data' , data );
 				if ( data.success === false ){
 					alert (data.msg);
-					$(me).removeAttr("checked");
+					if ($(me).is(':checked')) {
+						$(me).removeAttr("checked");
+					}else {
+						$(me).attr("checked","checked");
+					}					
 					return false;
 				}				
 			},
 			dataType: 'json'
-		});
+			});
+		}else{
+			alert (LOCALS.l_errorMustUpTo5);
+			if ($(me).is(':checked')) {
+				$(me).removeAttr("checked");
+			}else {
+				$(me).attr("checked","checked");
+			}
+		}
 		
    });
    

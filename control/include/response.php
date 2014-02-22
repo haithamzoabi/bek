@@ -35,18 +35,18 @@ switch ($requestMethod) {
 
 					case 'add':
 					$q = sprintf("insert into vid_cats (v_name,v_order,v_status) values ('%s','%s','%s')", 
-						mysql_real_escape_string($postFields['txtname']), 
-						mysql_real_escape_string($postFields['txtorder']), 
-						mysql_real_escape_string($postFields['lststatus'])
+						mysqli_real_escape_string($conn,$postFields['txtname']), 
+						mysqli_real_escape_string($conn,$postFields['txtorder']), 
+						mysqli_real_escape_string($conn,$postFields['lststatus'])
 					);
 					break;
 
 					case 'update':
 					$sid = getPostInput('sid');
 					$q=  sprintf("update vid_cats set v_name='%s', v_order='%s', v_status='%s' where v_id='$sid'",
-						mysql_real_escape_string($postFields['txtname']), 
-						mysql_real_escape_string($postFields['txtorder']), 
-						mysql_real_escape_string($postFields['lststatus'])					
+						mysqli_real_escape_string($conn,$postFields['txtname']), 
+						mysqli_real_escape_string($conn,$postFields['txtorder']), 
+						mysqli_real_escape_string($conn,$postFields['lststatus'])					
 					);
 					break;
 				}
@@ -68,24 +68,24 @@ switch ($requestMethod) {
 				switch ($postAction){
 					case 'add':
 					$q= sprintf("insert into video (v_category,v_city,v_title,v_description,v_link,v_status) values ('%s','%s','%s','%s','%s','%s')",
-						mysql_real_escape_string($postFields['lstCategories']), 
-						mysql_real_escape_string($postFields['lstCities']), 
-						mysql_real_escape_string($postFields['txtTitle']), 
-						mysql_real_escape_string($postFields['txtDetails']), 
-						mysql_real_escape_string($postFields['txtLink']), 
-						mysql_real_escape_string($postFields['lststatus']) 
+						mysqli_real_escape_string($conn,$postFields['lstCategories']), 
+						mysqli_real_escape_string($conn,$postFields['lstCities']), 
+						mysqli_real_escape_string($conn,$postFields['txtTitle']), 
+						mysqli_real_escape_string($conn,$postFields['txtDetails']), 
+						mysqli_real_escape_string($conn,$postFields['txtLink']), 
+						mysqli_real_escape_string($conn,$postFields['lststatus']) 
 					);
 					break;
 					
 					case 'update':
 						$sid = getPostInput('sid');
 						$q=  sprintf("update video set v_category='%s', v_city='%s', v_title='%s' , v_description='%s' , v_link='%s' , v_status='%s' where v_id='$sid'",
-							mysql_real_escape_string($postFields['lstCategories']), 
-							mysql_real_escape_string($postFields['lstCities']), 
-							mysql_real_escape_string($postFields['txtTitle']), 
-							mysql_real_escape_string($postFields['txtDetails']), 
-							mysql_real_escape_string($postFields['txtLink']), 
-							mysql_real_escape_string($postFields['lststatus']) 				
+							mysqli_real_escape_string($conn,$postFields['lstCategories']), 
+							mysqli_real_escape_string($conn,$postFields['lstCities']), 
+							mysqli_real_escape_string($conn,$postFields['txtTitle']), 
+							mysqli_real_escape_string($conn,$postFields['txtDetails']), 
+							mysqli_real_escape_string($conn,$postFields['txtLink']), 
+							mysqli_real_escape_string($conn,$postFields['lststatus']) 				
 						);
 					break;
 					
@@ -94,9 +94,10 @@ switch ($requestMethod) {
 						$value = getPostInput('value');
 						if ($value==1){						
 							$q="SELECT COUNT(*) FROM video where v_pin='1' GROUP BY v_pin INTO @count; 
-								UPDATE video set v_pin='1' where v_id='$sid' and  @count < 5";
+								UPDATE video set v_pin='1' where v_id='$sid' and  @count < 5 ";
 						}else{
-							$q =  "update video set v_pin='0' where v_id='$sid'";
+							$q =  "SELECT COUNT(*) FROM video where v_pin='1' GROUP BY v_pin INTO @count;
+							update video set v_pin='0' where v_id='$sid' and @count > 1";
 						}
 					break;
 				}
@@ -181,7 +182,7 @@ switch ($requestMethod) {
 			break;
 			
 		    case 'vidCategories_list':
-				$selectValues = [];
+				$selectValues = array();
 				$q="select v_id,v_name from vid_cats order by v_order limit 100";
 				$res = query($q);
 				while ($row = $res->fetch_row()){
@@ -198,7 +199,7 @@ switch ($requestMethod) {
 			break;
 			
 			case 'cities_list':
-				$selectValues = [];
+				$selectValues = array();
 				$q="select c_id,c_name from cities order by c_name limit 100";
 				$res = query($q);
 				while ($row = $res->fetch_row()){

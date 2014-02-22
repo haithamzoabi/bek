@@ -231,6 +231,12 @@ img{border:0;}
 	padding-right:10px;
 	margin : 10px;
 }
+.home .category_main .title a{
+	color: inherit;
+}
+.home .category_main .title a:hover{
+	text-decoration: underline;
+}
 .home .category_main .items{
 	height : 310px;
 	overflow:hidden;
@@ -242,6 +248,14 @@ img{border:0;}
 	margin-left : 30px;	
 	overflow:hidden;
 	background:#484848;
+}
+.home .category_main .items .row a{
+	color:inherit;
+}
+.home .category_main .items .row a span{
+	padding: 0px 15px;
+	color:#ffffff;
+	font-size: 1.2em;
 }
 .home .category_main .items .row:first-child{
 	margin-right : 10px;

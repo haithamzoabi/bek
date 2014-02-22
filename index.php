@@ -11,5 +11,5 @@ include("includes/connect.php");
 $setBodyContainerOn = true;
 include("scripts/body.scp.php");	
 include("includes/footer.php");
-mysql_close($connect);
+$conn->close();
 ?>
