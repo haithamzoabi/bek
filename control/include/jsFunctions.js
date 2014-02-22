@@ -220,7 +220,7 @@ function FUNC(){
 				me.addOptionToSelect (lstBoxId ,data.selectValues , selectedId);
 			},
 			dataType: 'json'
-		})
+		});
 	
 	}
 	

@@ -88,13 +88,25 @@ switch ($requestMethod) {
 							mysql_real_escape_string($postFields['lststatus']) 				
 						);
 					break;
+					
+					case 'pin':
+						$sid = getPostInput('sid');
+						$value = getPostInput('value');
+						if ($value==1){						
+							$q="SELECT COUNT(*) FROM video where v_pin='1' GROUP BY v_pin INTO @count; 
+								UPDATE video set v_pin='1' where v_id='$sid' and  @count < 5";
+						}else{
+							$q =  "update video set v_pin='0' where v_id='$sid'";
+						}
+					break;
 				}
 				
-				$res = query($q);
-				if ($res) {
-					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res, 'q'=>$q);
+				$res = multiQuery($q , $conn);
+				$numRows= $conn->affected_rows;
+				if ($res && $numRows > 0) {
+					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res , 'rows' => $numRows);
 				} else {
-					$arr = array('success' => false, 'msg' => $l_errormessage);
+					$arr = array('success' => false, 'msg' => $l_errorMustUpTo5  , 'rows' => $numRows);
 				}
 
 				echo json_encode($arr);
@@ -144,7 +156,7 @@ switch ($requestMethod) {
 		    case 'categoriesForm':
 				$q = "select * from vid_cats where v_id='$sid'";
 				$res = query($q);
-				$row = mysql_fetch_row($res);
+				$row = $res->fetch_row();
 				$arr = array('success' => true, 'row' => array(
 					'txtname' => $row[1],
 					'txtorder' => $row[2],
@@ -156,7 +168,7 @@ switch ($requestMethod) {
 			case 'videoForm':
 				$q="select * from video where v_id='$sid' ";
 				$res= query($q);
-				$row = mysql_fetch_row($res);
+				$row = $res->fetch_row();
 				$arr = array('success' => true, 'row' => array(
 					'lstCategories' => $row[1],
 					'lstCities' => $row[2],
@@ -170,9 +182,9 @@ switch ($requestMethod) {
 			
 		    case 'vidCategories_list':
 				$selectValues = [];
-				$q="select v_id,v_name from vid_cats where v_status='1' order by v_order limit 100";
+				$q="select v_id,v_name from vid_cats order by v_order limit 100";
 				$res = query($q);
-				while ($row = mysql_fetch_row($res)){
+				while ($row = $res->fetch_row()){
 					
 					$object = array(
 						 'value' => $row[0],
@@ -189,7 +201,7 @@ switch ($requestMethod) {
 				$selectValues = [];
 				$q="select c_id,c_name from cities order by c_name limit 100";
 				$res = query($q);
-				while ($row = mysql_fetch_row($res)){
+				while ($row = $res->fetch_row()){
 					
 					$object = array(
 						 'value' => $row[0],

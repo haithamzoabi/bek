@@ -19,21 +19,15 @@ $script_page = return_page_param();
 
 ////////////////LOCALIZATION
 $json = file_get_contents("$controlDomainName/include/local.json");
-$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
+//$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
 
+$json = preg_replace('/^\xEF\xBB\xBF/', '', $json);
+$jsonIterator = json_decode($json, TRUE);
 foreach ($jsonIterator as $key => $val) {
     $$key = $val;
 }
-
 //////////////
-function query($q) {
-    if ($res = mysql_query($q)) {
-	return $res;
-    } else {
-		//die('ERROR: ' . mysql_error());
-	return false;
-    }
-}
+
 
 function check_empty_fields($fields_arr) {
     $empty_fields_arr = array();
@@ -63,12 +57,6 @@ function return_globals() {
     return @json_encode($arr);
 }
 
-function getCustomerTypeData($cid) {
-    $q = "select * from customers_types where cust_type_code = '$cid' ";
-    $res = query($q);
-    $row = mysql_fetch_row($res);
-    return $row;
-}
 
 function getMenu() {
     return $GLOBALS['menuArray'];

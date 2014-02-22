@@ -27,7 +27,7 @@
 	$q = "select * from vid_cats order by v_order asc";
 	$res = query($q);
 	$i = 0;
-	while ($row = mysql_fetch_row($res)) {
+	while ($row = $res->fetch_row() ) {
 	    $i++;
 	    ?>
 

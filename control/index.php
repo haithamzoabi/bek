@@ -19,5 +19,5 @@ if (!$loggedInFun || $loggedInFun == false) {
 }
 
 include("include/footer.php");
-mysql_close($connect);
+$conn->close();
 ?>

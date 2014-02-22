@@ -88,9 +88,6 @@ $l_addnewarticle="إضافة مقال جديد";
 $l_areyousure="هل أنت متأكد؟";
 
 
-$l_videoslist="قائمة الفيديو";
-$l_updatevi="تعديل فيديو";
-$l_addnewvid="إضافة فيديو";
 $l_ytlink="رابط يوتيوب";
 $l_description="وصف";
 $l_preview="معاينة";

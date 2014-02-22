@@ -14,13 +14,6 @@ $GetPageVal = $url[0];
 $getpage = (isset($GetPageVal) && !empty($GetPageVal) && $GetPageVal !== 'logout' ) ? $url[0] : $homepageGet;
 $script_page = return_page_param();
 
-function query($q) {
-	if ($res = mysql_query($q)) {
-		return $res;
-	} else {
-		die('ERROR: ' . mysql_error());
-	}
-}
 
 function check_empty_fields($fields_arr) {
 	$empty_fields_arr = array();
@@ -50,12 +43,6 @@ function return_globals() {
 	return @json_encode($arr);
 }
 
-function getCustomerTypeData($cid) {
-	$q = "select * from customers_types where cust_type_code = '$cid' ";
-	$res = query($q);
-	$row = mysql_fetch_row($res);
-	return $row;
-}
 
 $menuArray = array(
 	"home" => "$l_main",
