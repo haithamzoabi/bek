@@ -1,0 +1,16 @@
+@font-face{
+	font-family:"HelveticaNeue";
+	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.eot);
+	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.woff) format("woff"),
+	url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.ttf) format("truetype"),
+	url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.svg#HelveticaNeueLTArabic55Roman) format("svg");
+	font-style:normal;
+}
+@font-face{
+	font-family:"HelveticaNeueBold";
+	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.eot);
+	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.woff) format("woff"),
+	url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.ttf) format("truetype"),
+	url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.svg#HelveticaNeueLTArabic55Roman) format("svg");
+	font-style:normal;
+}

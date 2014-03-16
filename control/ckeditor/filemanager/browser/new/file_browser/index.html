@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ExtJS File Browser</title>
+	<style>
+	*{
+		font-family : Trebuchet MS
+	}
+	</style>
+    <link rel="stylesheet" href="../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../ext4/ext-all.js"></script>
+    <script type="text/javascript">
+	
+	function getParam(param) {
+		var queryString = Ext.Object.fromQueryString(location.search);
+		return queryString[param];
+	}
+	function firstLetterToCapital(string){
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	function firstLetterToLower(string){
+		return string.charAt(0).toLowerCase() + string.slice(1);
+	}
+    Ext.onReady(function() {   
+	
+	
+	function returnBaseFolder(record){
+		depth = record.get('depth');
+		if (depth === 1){
+			return record.get('text');
+		}else{
+			return returnBaseFolder(record.parentNode);
+		}
+	}
+	
+		var myuploadform= Ext.create('Ext.form.Panel', {
+                fileUpload: true,
+                width: 400,
+				border:0,
+                autoHeight: true,
+                bodyPadding: 10,				
+				bodyStyle: 'background:transparent',
+                items:[
+                {
+                    xtype: 'fileuploadfield',
+                    id: 'filedata',
+					name: 'filedata',
+                    emptyText: 'Select a document to upload...',
+                    fieldLabel: 'File',
+					labelWidth: 50,
+					allowBlank : false,
+					msgTarget: 'side',
+					anchor: '100%',
+                    buttonText: 'Browse...',
+                }],
+                buttons: [{
+                    text: 'Upload',
+                    handler: function(){
+						var selectedRecord = Ext.ComponentQuery.query('treepanel')[0].selectedRecord;
+						if (!selectedRecord){
+							return;
+						}
+						var uploadPath = selectedRecord.get('id');
+						var BaseFolder = returnBaseFolder(selectedRecord);
+							BaseFolder = firstLetterToCapital(BaseFolder);
+
+						var params = "?Command=FileUpload&Type="+BaseFolder+"&CurrentFolder="+uploadPath;
+                        if(myuploadform.getForm().isValid()  && BaseFolder){
+                            form_action=1;						
+                            myuploadform.getForm().submit({							
+                                url: 'handleupload.php'+params,
+                                waitMsg: 'Uploading file...',
+                                success: function(form,action){
+									if (action.result.success === true){
+										uploadWindow.close();
+										store_file.load({
+											url: 'get_file.php?dir=' +uploadPath
+										});
+									}
+                                },
+								failure : function(form,action){
+									if (action.result.sErrorNumber==='201'){
+										Ext.Msg.alert('File Exist' ,'The file has been reanmed to '+action.result.file,function(){
+											uploadWindow.close();
+											store_file.load({
+												url: 'get_file.php?dir=' +uploadPath
+											});
+										});										
+									}else {
+										Ext.Msg.alert('Error' ,'Could not upload file :  '+action.result.file,function(){
+											uploadWindow.close();											
+										});
+									}
+								}
+                            });
+                        }
+                    }
+                }]
+            })
+			
+		var uploadWindow = Ext.create('widget.window',{
+			title : 'Upload File',
+			bodyPadding : '0',
+			modal: true,
+			closeAction:'hide',
+			items : [myuploadform],
+			listeners:{
+				show : function(){
+					myuploadform.getForm().reset();
+				}
+			}
+		});	
+		
+		
+		var newFolderWindow = Ext.create('widget.window',{
+			title : 'Create New Folder',
+			bodyPadding : '0',
+			modal: true,
+			closeAction:'hide',
+			items : [{
+				xtype :'form',
+				bodyStyle: 'background:transparent',
+				width: 400,
+				border:0,
+                autoHeight: true,
+                bodyPadding: 10,
+				items : [{
+					xtype : 'textfield',
+					name : 'NewFolderName',
+					emptyText: 'Type the name of the new folder...',
+                    fieldLabel: 'Folder Name',
+					labelWidth: 80,
+					allowBlank : false,
+					msgTarget: 'side',
+					anchor: '100%',
+				}],
+				buttons : [{
+					text : 'Create',
+					handler : function(){
+						var form = newFolderWindow.getComponent(0).getForm();
+						var selectedRecord = Ext.ComponentQuery.query('treepanel')[0].selectedRecord;
+						if (!selectedRecord){							
+							return;
+						}
+						var uploadPath = selectedRecord.get('id');
+						var BaseFolder = returnBaseFolder(selectedRecord);
+							BaseFolder = firstLetterToCapital(BaseFolder);
+						var params = '?Command=CreateFolder&Type='+BaseFolder+'&CurrentFolder='+uploadPath;
+						if(form.isValid()){
+							form.submit({
+								clientValidation: true,
+								method: 'post',
+								url: 'handleupload.php'+params,
+								waitMsg: 'Please wait...',
+								success: function(form,action){
+									newFolderWindow.close();
+									tree_dir.autoSelect = false;
+									tree_dir.store.expandId = uploadPath;
+									tree_dir.store.load();
+									
+									
+									
+								},
+								failure : function(form,action){
+									Ext.Msg.alert('Error' ,'Could not create folder :  '+action.result.folder,function(){
+										newFolderWindow.close();											
+									});
+								}
+							});
+						}
+					}
+				}]
+			}]
+		});
+	
+        store_dir = Ext.create('Ext.data.TreeStore', {
+            proxy: {
+                type: 'ajax',
+                url: 'get_dir.php'
+            }
+        });
+        
+        tree_dir = Ext.create('Ext.tree.Panel', {
+            title: 'Localhost Directory',
+            rootVisible: false,
+            store: store_dir,
+            split: true,
+            region: 'west',
+            collapsible: true,
+            floatable: false,
+            width: 200,
+            useArrows: true,
+			autoSelect:true,
+			expandById: function(id){
+				var node = tree_dir.store.getRootNode().findChild('id',tree_dir.store.expandId,true);
+				while (node.get('root')==false){
+					node.expand();
+					node = node.parentNode;
+				}
+			},
+            listeners: {  
+				afterrender: function(treepanel){
+					var type = getParam('Type')||'';
+					type = firstLetterToLower(type);
+					if (type.length === 0){
+						type = "file";
+					}
+					store_dir.on('load' , function(store){
+						var typeRecord = store.getRootNode().findChild('text',type);
+						if (tree_dir.autoSelect && typeRecord){
+							treepanel.getSelectionModel().select(typeRecord);
+						}
+						if (store.expandId){
+							tree_dir.expandById(store.expandId); 
+						}
+					});
+				},
+				selectionchange: function(treepanel,  selected){
+					if (selected.length === 0 ){
+						return;
+					}
+						
+					var record = selected[0];
+					store_file.load({
+						url: 'get_file.php?dir=' + record.data.id
+					});
+					tree_dir.selectedRecord = record;
+				}
+            }
+        });
+        
+        Ext.define('File', {
+           extend: 'Ext.data.Model',
+           fields: ['filename', 'filesize', 'filedate','path']
+        });
+        
+        store_file = Ext.create('Ext.data.Store', {
+            model: 'File',
+            proxy: {
+              type: 'ajax',
+              url: 'get_file.php',
+              reader: {
+                  type: 'json',
+                  root: 'files'
+              }
+            }
+        });      
+        
+        grid_file = Ext.create('Ext.grid.Panel', {
+            title: 'File List',
+            region: 'center',
+            store: store_file,			
+			bbar:{
+				items : [{
+					xtype: 'button',
+					id: 'new-folder',
+					text : 'Create New Folder',
+					handler:function(){
+						newFolderWindow.show();
+					}
+				},{
+					xtype: 'button',
+					text : 'Upload File',
+					handler:function(){
+						uploadWindow.show();
+					}
+				}]
+			},
+            columns: [
+                { header: 'Name', width: 170, dataIndex: 'filename' },
+                { header: 'Size', width: 100, dataIndex: 'filesize' },
+                { header: 'Last Modified', width: 200, dataIndex: 'filedate' }
+            ],
+            viewConfig: {
+                stripeRows: true
+            },
+			listeners: {
+				itemdblclick: function( comp, record, item, index, event ){					
+					funcNum = getParam('CKEditorFuncNum');
+					fileUrl = '/'+record.get('path');
+					window.top.opener.CKEDITOR.tools.callFunction( funcNum, fileUrl);
+					window.top.close() ;
+					window.top.opener.focus() ;
+				},
+			}
+        });
+
+		Ext.create('Ext.container.Viewport', {
+			layout : 'border',
+			items : [tree_dir,grid_file]		
+		});		
+    });
+    </script>
+</head>
+<body>
+</body>
+</html>

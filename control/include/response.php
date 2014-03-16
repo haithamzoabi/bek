@@ -28,6 +28,25 @@ switch ($requestMethod) {
 	    case 'set':
 
 		switch ($postPage) {
+		
+		
+			case 'simpleContentForm':
+				if ($postAction=='update'){
+					$sid = getPostInput('sid');
+					$q= sprintf("update simple_content set c_text='%s' where c_id='$sid' "  , 
+						$postFields['txtcontent']
+					);
+					
+					$res = query($q);
+					if ($res) {
+						$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res);
+					} else {
+						$arr = array('success' => false, 'msg' => $l_errormessage);
+					}
+
+					echo json_encode($arr);
+				}
+			break;
 
 		    case 'categoriesForm':
 			
@@ -54,7 +73,7 @@ switch ($requestMethod) {
 				
 				$res = query($q);
 				if ($res) {
-					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res, 'q'=>$q);
+					$arr = array('success' => true, 'msg' => $l_savesuccess, 'result' => $res);
 				} else {
 					$arr = array('success' => false, 'msg' => $l_errormessage);
 				}
@@ -215,6 +234,16 @@ switch ($requestMethod) {
 				echo json_encode($arr);
 			break;
 			
+			
+			case 'simpleContentForm':
+				$q="select c_text from simple_content where c_id='$sid' ";
+				$res= query($q);
+				$row = $res->fetch_row();
+				$arr = array('success' => true, 'row' => array(
+					'txtcontent' => $row[0]					
+				));
+				echo json_encode($arr);
+			break;
 
 		}
 

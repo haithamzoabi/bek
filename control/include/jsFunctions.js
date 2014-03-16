@@ -1,67 +1,31 @@
-/*
- config.toolbar = 'Full';
- 
- config.toolbar_Full =
- [
- { name: 'document', items : [ 'Source','-','Save','NewPage','DocProps','Preview','Print','-','Templates' ] },
- { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
- { name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
- { name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
- 
- 'HiddenField' ] },
- '/',
- { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
- { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-
- 
- ','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
- { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
- { name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
- '/',
- { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
- { name: 'colors', items : [ 'TextColor','BGColor' ] },
- { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
- ];
- 
- config.toolbar_Basic =
- [
- ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
- ];
- */
-
-
 var editor;
-function createEditor(languageCode) {
-    if (editor)
+var filemanager = LOCALS.controlDomainName+'/ckeditor/filemanager/';
+var browser = filemanager + 'browser/new/file_browser/';
+var connector = filemanager + 'connectors/php/connector.php';
+var upload = filemanager + 'connectors/php/upload.php';
+
+function createEditor(languageCode , id) {
+    var editorElement= id || 'ckeditor';
+	if (editor)
 	editor.destroy();
 // Replace the <textarea id="editor"> with an CKEditor
 // instance, using default configurations.
-    editor = CKEDITOR.replace('ckeditor', {
-	language: languageCode,
-	skin: 'kama',
-	width: '680px',
-	removePlugins: 'resize',
-	toolbar:
-		[
-		    {name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-		    {name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'SpellChecker', 'Scayt']},
-		    {name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak']},
-		    '/',
-		    {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-		    {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiRtl', 'BidiLtr']},
-		    '/',
-		    {name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize']},
-		    {name: 'colors', items: ['TextColor', 'BGColor']},
-		    {name: 'tools', items: ['Maximize', 'ShowBlocks', '-', 'About']}
-		]
+    editor = CKEDITOR.replace( editorElement , {
+	customConfig : this.config,	
+	width: '880px',
+	height: '400px',
+	removePlugins: 'resize',	
+	filebrowserBrowseUrl: browser ,
+	filebrowserImageBrowseUrl: browser + '?Type=Image',
+	filebrowserFlashBrowseUrl: browser + '?Type=Flash',
+	filebrowserWindowWidth: 970,
+	filebrowserWindowHeight: 600,
+	//filebrowserUploadUrl : upload + '?type=Files',
+    //filebrowserImageUploadUrl : upload + '?type=Images',
+    //filebrowserFlashUploadUrl : upload + '?type=Flash'
     });
+	return editor;
 }
-// At page startup, load the default language:
-$(function() {
-    if ($('#ckeditor').is(':visible')) {
-	createEditor('ar');
-    }
-
-})
 
 
 
@@ -234,7 +198,7 @@ function FUNC(){
 		});
 	}
 	
-	this.sendFormData= function(formId , action ){
+	this.sendFormData= function(formId , action , id, editor){
 		
 		this.formId = formId;
 		this.action = action;
@@ -246,7 +210,9 @@ function FUNC(){
 				$('form').prepend(msgBox(false, data));
 				return false;
 			}
-
+			if (editor){
+				fields.fields[editor.name] = editor.getData();
+			}
 			$.ajax({
 				type: "POST",
 				url: LOCALS.controlDomainName +'/include/response.php',
@@ -254,11 +220,11 @@ function FUNC(){
 					type: 'set',
 					page: formId,
 					action: action,
-					sid : (action==='update')?getURLParameter('sid'):null,
+					sid : (action==='update')?id || getURLParameter('sid'):null,
 					fields: fields.fields
 				},
 				success: me.sendSuccessCallBack,
-				failure : me.sendFailureCallBack,
+				error : me.sendFailureCallBack,
 				dataType: 'json'
 			});
 			
@@ -279,7 +245,8 @@ function FUNC(){
 	}
 	
 	this.sendFailureCallBack = function(response){
-		console.log ('Error: your request has failed' , data , this);
+		$('#'+me.formId).prepend(msgBox(false, {msg:LOCALS.requestFail} ) );
+		console.log ('Error: your request has failed' , response , this);
 	}
 	
 	this.ajaxIncludeFile = function(file,containerDivId){
@@ -324,9 +291,9 @@ function FUNC(){
 		return obj = {fields: fields, emptyFields: emptyFields};
 	}
 
-	this.fetchData = function(formId, callBack){
+	this.fetchData = function(formId, callBack , id){
 	
-		var sid = getURLParameter('sid');
+		var sid = id || getURLParameter('sid');
 		var menu = getURLParameter('menu');
 		if (sid) {
 			$.ajax({

@@ -1,21 +1,6 @@
-@font-face{
-	font-family:"HelveticaNeue";
-	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.eot);
-	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.woff) format("woff"),
-	url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.ttf) format("truetype"),
-	url(http://localhost/bek/fonts/HelveticaNeueW23-Reg.svg#HelveticaNeueLTArabic55Roman) format("svg");
-	font-style:normal;
-}
-@font-face{
-	font-family:"HelveticaNeueBold";
-	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.eot);
-	src:url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.woff) format("woff"),
-	url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.ttf) format("truetype"),
-	url(http://localhost/bek/fonts/HelveticaNeueW23-Bd.svg#HelveticaNeueLTArabic55Roman) format("svg");
-	font-style:normal;
-}
-
-
+@import url("fontSet.css");
+@import url("homePageSet.css");
+@import url("innderPageSet.css");
 
 
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
@@ -36,7 +21,7 @@ abbr,acronym,a { border: 0;outline:none}
 
 BODY{
 	overflow:auto;
-	margin:0px;	padding:0px;	font-family:tahoma;	font-size:14px;	direction:rtl;	font-family: "HelveticaNeue",Tahoma;
+	font-family: "HelveticaNeue",Tahoma;	margin:0px;	padding:0px;	font-size:14px;	direction:rtl;
 	background: -moz-linear-gradient(top,#E3E1E1 0%,#E2E0E0 18%,#F6F5F5 78%,#F7F6F6 100%);
 	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#E3E1E1),color-stop(18%,#E2E0E0),color-stop(78%,#F6F5F5),color-stop(100%,#F7F6F6));
 	background: -webkit-linear-gradient(top,#E3E1E1 0%,#E2E0E0 18%,#F6F5F5 78%,#F7F6F6 100%);
@@ -51,7 +36,7 @@ BODY{
 
 #header{
 overflow:hidden; 
-height:90px;border-bottom:1px solid #BEBEBE;
+height:100px;border-bottom:1px solid #BEBEBE;
 background: -moz-linear-gradient(top,#5C5C5C, #242625);
 background: -webkit-gradient(linear, center top, center bottom, from(#5C5C5C), to(#242625));
 background-image:-ms-linear-gradient(#5C5C5C 0%, #242625 100%);
@@ -66,28 +51,98 @@ background: -moz-linear-gradient(top,#5C5C5C, #242625);
 background: -webkit-gradient(linear, center top, center bottom, from(#5C5C5C), to(#242625));
 background-image:-ms-linear-gradient(#5C5C5C 0%, #242625 100%);
 }
-#header.home .slide-cont{ display:inline-block;}
+#header.home .slide-cont{ display:inline-block;overflow:hidden}
 #header.home .slide-details{ display:inline-block;}
-#header a{
-	float: right;
-}
-#header h1{ 
-	line-height: 80px;
-	margin: 0 15px;
-	color: #FFBE0F;
-	font-weight: bold;
-	font-size: 4em;
 
+
+
+.slide-cont #slide-cont-inner{
+	position: absolute;
 }
-#header.home h1{ 
-	line-height: 240px;
-	margin: 0 15px;
+.slide-cont #slide-cont-inner .slide-element{
+	display:inline-block;
+}
+.slide-cont .play-icon{
+cursor: pointer;
+width: 100px;
+height: 100px;
+background: url('../images/play-button.png');
+position: absolute;
+left: 42%;
+top: 35%;
+display:none;
+}
+.slide-cont:hover .play-icon{
+	display:inline-block
+}
+.slide-cont .slide-prev-btn,.slide-cont .slide-next-btn{
+	position : absolute;
+	height: 86px;
+	width: 60px;
+	right: 0px;
+	top:40%;
+	background : url('../images/d14.png') right top no-repeat; 
+	cursor: pointer;
+}
+.slide-cont .slide-next-btn{
+	left: 0px;
+	right: auto;
+	background-position: left top;
+}
+.slide-cont .slide-next-btn:hover{
+	background-position: left bottom;
+}
+.slide-cont .slide-prev-btn:hover{
+	background-position: right bottom;
+}
+
+a.websiteName{
+	float: right;
+	display: inline-block;
+	width : 300px;
+	height : 100px;
+	background: url(../images/Horse-home.png) center right no-repeat;
+	padding-right: 70px;
+}
+a.websiteName h1{ 
+	line-height: 65px;
+	margin: 0px 15px 0;
 	color: #FFBE0F;
 	font-weight: bold;
+	font-size: 3.5em;	
+	font-style: italic;
+	text-shadow: 0 1px 0px #AFAFAF;
+}
+.home a.websiteName{
+	height : 240px;
+}
+.home a.websiteName h1{ 
+	line-height: 80px;
+	margin: 70px 15px 0;
 	font-size: 5em;
 }
+a.websiteName h1 > span,a.websiteName h2 > span{
+	color:#FF9900
+}
+a.websiteName h2{ 
+	color: #FFC000;
+	font-size: 1.5em;
+	line-height: 20px;
+	margin-right: 17px;
+	font-style: italic;
+	text-shadow: 0 1px 0px #AFAFAF;
+}
+.home a.websiteName h2{
+	font-size: 2em;
+}
 
-.contWrapper{width:1250px;margin:0px auto;overflow:hidden}
+.contWrapper{
+	width:1250px;
+	height:100%;
+	margin:0px auto;
+	overflow: hidden;
+	background : url('../images/arabisque.png') repeat-x top right;
+}
 
 
 #contentWrapper{width:1252px; margin:0px auto;overflow:hidden}
@@ -180,11 +235,15 @@ img{border:0;}
     border-top-right-radius: 30px;
     margin-top: -40px;
     float: left;
-    width: 615px;
-    height: 140px;
+    width: 560px;
+    height: 70px;
     background: #FFC000;
     border-bottom-right-radius: 30px;
-    z-index: 0;
+    z-index: 0;	
+	color: #333;
+	font-size: 1.2em;
+	padding: 30px;
+	text-shadow: 0 1px 1px #FFF;
 }
 .main-menu-con{
 	height : 43px;	
@@ -211,64 +270,35 @@ img{border:0;}
 #menu ul li a{color:#252525;display:block;padding:0px 15px}
 
 
-.home{
-	overflow: hidden;	
-}
-.home .category_main{
+div.pagination{
 	display:block;
-	margin-bottom : 15px;
-	height : 370px;
-	padding : 0; 
-	width : 100%;
-	overflow : hidden;
+	height : 25px;
+	margin : 15px auto;
 }
-.home .category_main .title{
-	height : 60px;
-	line-height :60px;
-	font-size: 2.5em;
-	background : #FFC000;	
-	color : #ffffff;	
-	padding-right:10px;
-	margin : 10px;
-}
-.home .category_main .title a{
-	color: inherit;
-}
-.home .category_main .title a:hover{
-	text-decoration: underline;
-}
-.home .category_main .items{
-	height : 310px;
-	overflow:hidden;
-}
-.home .category_main .items .row{
-	float: right;
-	width : 390px;
-	height : 310px;
-	margin-left : 30px;	
-	overflow:hidden;
-	background:#484848;
-}
-.home .category_main .items .row a{
-	color:inherit;
-}
-.home .category_main .items .row a span{
+div.pagination a,div.pagination .current{
+	display: inline-block;
+	color: #1D1D1D;
+	min-width: 30px;
 	padding: 0px 15px;
-	color:#ffffff;
-	font-size: 1.2em;
+	height: 25px;
+	background: #BDBDBD;
+	border: 1px solid #484848;
+	cursor: pointer;
+	outline: none;
+	line-height: 29px;
+	margin-left: 1px;
 }
-.home .category_main .items .row:first-child{
-	margin-right : 10px;
+div.pagination a:hover,div.pagination .current:hover,div.pagination .current{
+	color: #FFF;
+	border: 1px solid #484848;
+	background: #777575;
+	box-shadow: 0px 0px 4px #000;
 }
-.home .category_main .items .row:last-child{
-	margin-left: 10px;
-}
-.adv600x90{
-	width : 600px;
-	height : 90px;
-	overflow:hidden;
-	background:#D8D8D8;
-	outline : 1px solid #454545;
-	margin: 10px 10px 0px 10px;
-}
+
+
+
+
+
+
+
 

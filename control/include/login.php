@@ -12,7 +12,7 @@
     <div>
 
 	<form method="POST" action="index.php" >
-	    <table align="center" cellpadding="3" cellspacing="0" style=" color: #660033 "  width="400px" dir="rtl" border="0">
+	    <table align="center" cellpadding="3" cellspacing="0" style=" color: #660033 "  width="100%" dir="rtl" border="0">
 		<tr><td colspan="2" align="center">&nbsp;<?= $err_msg ?>&nbsp;</td></tr>
 		<tr>
 		    <td align="left"  height="30px"><?= $l_username ?>&nbsp;:  </td>

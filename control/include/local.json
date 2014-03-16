@@ -21,5 +21,7 @@
 	"l_deleterror": "Error! لم يتم الحذف",
 	"l_deletesuccess": "تم الحذف، سيتم اغلاق هذه الصفحة بشكل تلقائي",
 	"l_errorMustUpTo5": "Error! عليك ان تختار على الاقل واحد وعلى الاكثر 5",
-	"": ""
+	"l_search": "بحث",
+	"l_viewpagelimit": "اعرض في كل صفحة",
+	"requestFail":"حدث خطأ من جهة السيرفر"
 }

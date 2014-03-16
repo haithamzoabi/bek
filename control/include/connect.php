@@ -24,7 +24,7 @@ function query($q ) {
     if ($res = $conn->query($q)) {
 		return $res;
     } else {
-		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+		print('Wrong SQL: ' . $sql . ' Error: ' . $conn->error);
 		//return false;
     }
 }

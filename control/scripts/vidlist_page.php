@@ -48,15 +48,31 @@ $(function(){
 });
 </script>
 <div class="pagediv">
-
+<?
+$txtsearch=$_GET['txtsearch'];
+$pageLimit=$_GET['pageLimit'];
+?>
+<div class="pForm">
     <form method="GET" >
 		<label for="vidCategory" ><?=$l_category?></label>
 		<select name="vidCategory" id="vidCategory" onchange="submit()">
 			<option value="0"><?=$l_latestVideo?></option>
 		</select>	
 		<input type="hidden" name="menu" value="<?=getGetInput('menu')?>" />
+		
+		<label><?=$l_search?></label>
+		<input type="text" name="txtsearch" size="40" id="txtsearch" value="<?=$txtsearch?>" placeholder="<?=" $l_videoTitle / $l_details"?>" />
+		&nbsp;
+		<label><?=$l_viewpagelimit?></label>
+		<select name="pageLimit" id="pageLimit" onchange="submit()">
+				<option value="20" <?=($pageLimit=='20'?'selected="selected"':'')?> >20</option>
+				<option value="30" <?=($pageLimit=='30'?'selected="selected"':'')?> >30</option>
+				<option value="40" <?=($pageLimit=='40'?'selected="selected"':'')?> >40</option>
+				<option value="50" <?=($pageLimit=='50'?'selected="selected"':'')?> >50</option>
+		</select>
+		
     </form>
-	
+</div>	
     <br>
 	
 	<table id="ntable"  >
@@ -87,12 +103,27 @@ $(function(){
 		<tbody>
 
 		<?
+		
+		$searchQuery = (!empty($txtsearch))?" and (v_title like '%$txtsearch%' OR v_description like '%$txtsearch%' )  ":"";
+				
 		$vidCategory  = getGetInput('vidCategory');
 		$whereQ = ( isset($vidCategory) && $vidCategory!=0 ) ? " and v_category='$vidCategory' "  : "";
-		$q = "select video.*,vid_cats.v_name from video,vid_cats where video.v_category=vid_cats.v_id $whereQ order by v_id desc limit 100";
-		$res = query($q);	
+		$query1 = "select video.*,vid_cats.v_name from video,vid_cats where video.v_category=vid_cats.v_id $whereQ $searchQuery order by v_id desc";
 		
-		//$res=$conn->query($q);
+		$queryres = query($query1);
+		$adjacents = 5;
+		$targetpage = "?vidCategory=$vidCategory&menu=$menu&txtsearch=$txtsearch&pageLimit=$pageLimit";
+		$total_pages = $queryres->num_rows;
+		$limit =(empty($pageLimit))?20:$pageLimit;
+		$pg = $_GET['pg'];
+		if($pg)
+		$start = ($pg - 1) * $limit; //first item to display on this pg
+		else
+		$start = 0;					//if no pg var is given, set start to 0
+		$mone=0;
+		include('scripts/paging.php');
+		$q = $query1." limit $start,$limit " ;
+		$res = query ($q);
 		
 		$i = 0;
 		while ($row = $res->fetch_row() ) {
@@ -129,7 +160,8 @@ $(function(){
 		<tfoot>
 			<tr>
 				<td align="right" >
-					&nbsp;<?= $l_totoal . ': ' . $i ?>
+					<div class="totalDiv"><?="$l_totoal : $total_pages"?></div>
+					<div class="pagination"><?=$pagination?></div>
 				</td>
 			</tr>
 		</tfoot>

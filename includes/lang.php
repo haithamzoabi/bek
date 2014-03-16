@@ -1,30 +1,24 @@
 <? 
-$l_websiteName = "إبن البيك" ;
-$l_login="دخول";
-$l_register="تسجيل";
+////////////////LOCALIZATION
+$json = file_get_contents("$domainName/includes/local.json");
+//$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator(json_decode($json, TRUE)), RecursiveIteratorIterator::SELF_FIRST);
 
-$l_allrightreserved="جميع الحقوق محفوظة &copy;";
+$json = preg_replace('/^\xEF\xBB\xBF/', '', $json);
+$jsonIterator = json_decode($json, TRUE);
+foreach ($jsonIterator as $key => $val) {
+    $$key = $val;
+}
+//////////////
 
-$l_email= "البريد الإلكتروني";
-$l_password= "الرقم السري";
-$l_passwordVerify="تأكيد الرقم السري";
-$l_firstName="الإسم الشخصي";
-$l_lastName= "إسم العائلة";
-$l_gender="الجنس";
-$l_birthdate = "تاريخ الميلاد";
-$l_country="الدولة";
 
-$l_main= "الرئيسية";
-$l_videos="فيديو";
-$l_pictures="صور";
-$l_songs="أغاني";
-$l_news="أخبارنا";
-$l_aboutUs="عن الموقع";
-$l_contactUs="راسلنا";
-
-$l_search = "بحث";
-$l_websitePageTitle="موقع - إبن البيك";
-$l_pageNotFound="عذراُ، لم يتم العثور على ما تبحث عنه";
-$l_pageNotFound2="الرابط الذي دخلته خاطئ. حاول الرجوع إلى الصفحة السابقة و التأكد من الرابط.";
+$menuArray = array(
+	"home" => "$l_main",
+	"video" => "$l_videos",
+	"gallery" => "$l_pictures",
+	"songs" => "$l_songs",
+	"news" => "$l_news",
+	"aboutus" => "$l_aboutUs",
+	"contactus" => "$l_contactUs"
+);
 
 ?>

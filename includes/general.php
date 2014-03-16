@@ -7,6 +7,7 @@ $domainName = 'http://localhost/bek/';
 $cssFilePath = $domainName . 'includes/style.css';
 $jqueryFilePath = $domainName . 'includes/jquery-library.min.js';
 $jsFunctionsFilePath = $domainName . 'includes/jsFunctions.js';
+$jsLOCALSfilePath = $domainName . "includes/jsLocaJson.php";
 
 $homepageGet = 'home';
 $setBodyContainerOn = false;
@@ -42,17 +43,6 @@ function return_globals() {
 	}
 	return @json_encode($arr);
 }
-
-
-$menuArray = array(
-	"home" => "$l_main",
-	"video" => "$l_videos",
-	"gallery" => "$l_pictures",
-	"songs" => "$l_songs",
-	"news" => "$l_news",
-	"aboutus" => "$l_aboutUs",
-	"contactus" => "$l_contactUs"
-);
 
 function getMenu() {
 	return $GLOBALS['menuArray'];

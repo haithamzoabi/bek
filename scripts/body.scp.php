@@ -7,7 +7,6 @@
 		<div class="page_center">
 			<div class="social">
 				<a href="" class="facebook"></a>
-				<a href="" class="twitter"></a>
 				<a href="" class="youtube"></a>
 			</div>		
 		</div>
@@ -16,10 +15,15 @@
 
 	<div id="header" class="<?=($getpage==$homepageGet)?'home':''?>">
 	<div class="contWrapper">
-	<a class="websiteName" href="<?=$domainName?>"><h1><?=$l_websiteName?></h1></a>
+	<a class="websiteName" href="<?=$domainName?>">
+		<h1><?=$l_websiteName?></h1> 
+		<h2>www.ebnalbe<span>k</span>.com</h2> 
+	</a>
 		
-		<div class="slide-cont"></div>
-		<div class="slide-details"></div>
+		<div class="slide-cont" id="slide-cont" >
+				<div id="slide-cont-inner"></div>
+		</div>
+		<div class="slide-details" id="slide-details" ></div>
 		
 	</div>
 	</div>
